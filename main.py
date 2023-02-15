@@ -5,12 +5,31 @@ See assignment-01.pdf for details.
 # no imports needed.
 
 def foo(x):
-    ### TODO
-    pass
+
+    if x<=1:
+        return x
+    ra= foo(x-1)
+    rb=foo(x-2)
+
+    return ra+rb
+    
 
 def longest_run(mylist, key):
-    ### TODO
-    pass
+    
+    runNums=[]
+    runNum=0
+
+    for i in range(mylist):
+        if mylist[i]==key:
+            runNum+=1
+        else:
+            runNums.append(runNum)
+            runNum=0
+    
+    longRun=max(runNums)
+
+    return longRun
+
 
 
 class Result:
@@ -27,8 +46,59 @@ class Result:
     
     
 def longest_run_recursive(mylist, key):
-    ### TODO
-    pass
+    
+    if len(mylist)==0:
+        return Result(0,0,0,False)
+    if len(mylist)==1 and mylist[0]==key:
+        return Result(1,1,1,True)
+    elif len(mylist)==1 and mylist[0]!=key:
+        return Result(0,0,0,False)
+
+
+    merge(
+        longest_run_recursive(mylist[:len(mylist)//2],key),
+        longest_run_recursive(mylist[len(mylist)//2:],key)
+    )
+
+    
+
+
+
+
+
+def merge(a,b):
+
+    ier=False
+
+    left_size=a.left_size
+    if a.is_entire_range:
+        left_size=a.left_size+a.right_size
+    
+    right_size=b.right_size
+    if a.is_entire_range:
+        right_size=b.right_size+b.left_size
+
+    middle_size=a.right_size+b.left_size
+
+    longest=max(left_size,right_size,middle_size)
+
+    if a.is_entire_range and b.is_entire_range:
+        longest=a.longest_size+b.longest_size
+        ier=True
+    
+
+    return Result(left_size,right_size,longest,ier)
+
+
+    
+
+    
+
+    
+
+
+
+
 
 ## Feel free to add your own tests here.
 def test_longest_run():
